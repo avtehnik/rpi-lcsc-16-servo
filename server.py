@@ -16,20 +16,21 @@ class MyHandler(BaseHTTPRequestHandler):
              self.send_header('Content-type',	'text/html')
              self.end_headers()
              self.wfile.write(query_components["callback"][0]+"({servo:" + query_components["servo"][0]+",position:"+query_components["position"][0]+"});")
- 	     ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-	     ser.open()
-	     ser.write('#'+query_components["servo"][0]+'P'+query_components["position"][0]+'!')
-	     ser.close()
-
+	     self.server.serial.write('#'+query_components["servo"][0]+'P'+query_components["position"][0].rjust(4,'0')+'!')
        	     return
+
 
 def main():
     try:
         server = HTTPServer(('', 81), MyHandler)
+	server.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=0)
+        server.serial.open()
+
         print 'started httpserver...'
         server.serve_forever()
     except KeyboardInterrupt:
         print '^C received, shutting down server'
+	server.serial.close()
         server.socket.close()
 
 
@@ -39,10 +40,11 @@ class MyDaemon(Daemon):
 		        print 'started httpserver w...'
          	 	main()
 
-
-
 if __name__ == '__main__':
-	# main()
+        main()
+
+if __name__ == '__maain__':
+	#main()
 	daemon = MyDaemon('/var/run/gpsserver.pid')
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
@@ -59,3 +61,4 @@ if __name__ == '__main__':
         else:
                 print "usage: %s start|stop|restart" % sys.argv[0]
                 sys.exit(2)
+
