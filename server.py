@@ -18,6 +18,51 @@ class MyHandler(BaseHTTPRequestHandler):
              self.wfile.write(query_components["callback"][0]+"({servo:" + query_components["servo"][0]+",position:"+query_components["position"][0]+"});")
 	     self.server.serial.write('#'+query_components["servo"][0]+'P'+query_components["position"][0].rjust(4,'0')+'!')
        	     return
+    def do_DELETE(self):
+             query_components = parse_qs(urlparse(self.path).query)
+             self.send_response(200)
+             self.send_header('Content-type',   'text/html')
+             self.end_headers()
+             self.server.serial.write('#01P2500!')
+             self.server.serial.write('#02P2500!')
+             self.server.serial.write('#03P2500!')
+             self.server.serial.write('#04P2500!')
+             self.server.serial.write('#05P2500!')
+             self.server.serial.write('#06P2500!')
+             self.server.serial.write('#07P2500!')
+             self.server.serial.write('#08P2500!')
+             self.server.serial.write('#09P2500!')
+             self.server.serial.write('#10P2500!')
+             self.server.serial.write('#11P2500!')
+             self.server.serial.write('#12P2500!')
+             self.server.serial.write('#13P2500!')
+             self.server.serial.write('#14P2500!')
+             self.server.serial.write('#15P2500!')
+             self.server.serial.write('#16P2500!')
+             return
+    def do_POST(self):
+             query_components = parse_qs(urlparse(self.path).query)
+             self.send_response(200)
+             self.send_header('Content-type',   'text/html')
+             self.end_headers()
+             self.server.serial.write('#01P0500!')
+             self.server.serial.write('#02P0500!')
+             self.server.serial.write('#03P0500!')
+             self.server.serial.write('#04P0500!')
+             self.server.serial.write('#05P0500!')
+             self.server.serial.write('#06P0500!')
+             self.server.serial.write('#07P0500!')
+             self.server.serial.write('#08P0500!')
+             self.server.serial.write('#09P0500!')
+             self.server.serial.write('#10P0500!')
+             self.server.serial.write('#11P0500!')
+             self.server.serial.write('#12P0500!')
+             self.server.serial.write('#13P0500!')
+             self.server.serial.write('#14P0500!')
+             self.server.serial.write('#15P0500!')
+             self.server.serial.write('#16P0500!')
+             return
+
 
 
 def main():
