@@ -9,7 +9,6 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 class MyHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        try:
 	     if self.path.endswith(".ico"):
   	       return
 	     query_components = parse_qs(urlparse(self.path).query)
@@ -22,10 +21,7 @@ class MyHandler(BaseHTTPRequestHandler):
 	     ser.write('#'+query_components["servo"][0]+'P'+query_components["position"][0]+'!')
 	     ser.close()
 
-       	     return      
-                
-        except IOError:
-            self.send_error(404,'File Not Found: %s' % self.path)
+       	     return
 
 def main():
     try:
